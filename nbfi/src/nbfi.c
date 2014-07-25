@@ -20,8 +20,8 @@
 #define STACK_EMPTY() (sp == 0)
 #define STACK_FULL() (sp == MAX_SIZE)
 
-static inline void die(int code, char* message){
-    fprintf(stderr, message);
+static inline void die(int code, const char* message){
+    fprintf(stderr, "%s", message);
     exit(code);
 }
 
@@ -83,7 +83,7 @@ void execute(){
             case OP_INC_VAL: data[ptr]++; break;
             case OP_DEC_VAL: data[ptr]--; break;
             case OP_OUT: putchar(data[ptr]); break;
-            case OP_IN: data[ptr] = (unsigned int)getchar(); break;
+            case OP_IN: data[ptr] = (short unsigned int)getchar(); break;
             case OP_JMP_FWD: if(!data[ptr]) { pc = program[pc].operand; } break;
             case OP_JMP_BCK: if(data[ptr]) { pc = program[pc].operand; } break;
             default: die(2, "Unknown instruction.");
