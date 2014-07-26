@@ -1,7 +1,6 @@
 override CFLAGS+=-Werror -Wall -g -fPIC -O2 -DNDEBUG -std=c99 -ftrapv -Wfloat-equal -Wundef -Wwrite-strings -Wconversion -Wuninitialized
 PREFIX=/usr/bin
 BUILDDIR=bin/
-CC=gcc-mp-4.9
 
 TARGET=vvm
 SOURCES=$(wildcard src/*.c)
@@ -9,7 +8,7 @@ SOURCES=$(wildcard src/*.c)
 #Makes everything
 all:
 	mkdir $(BUILDDIR)  2> /dev/null || true
-	$(CC) $(CFLAGS) $(SOURCES) -o $(BUILDDIR)$(TARGET)
+	cc $(CFLAGS) $(SOURCES) -o $(BUILDDIR)$(TARGET)
 
 #Uses picky extensions and makes everything(Extensions may break compiling)
 dev:
