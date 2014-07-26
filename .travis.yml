@@ -4,7 +4,7 @@ compiler:
     - clang
     -gcc
 
-build:
+script:
     - cd vvm
     - make && bin/vvm && make clean
     - cd ../nbfi
