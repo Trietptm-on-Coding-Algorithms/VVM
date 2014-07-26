@@ -25,6 +25,8 @@
 #define RET 23
 #define IPRINT 24
 #define FETCH 25 
+#define IINC 26
+#define IDEC 27 
 
 typedef struct{
     int operands;

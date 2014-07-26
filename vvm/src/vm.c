@@ -34,6 +34,12 @@ void vm_execute(int code[], int ip, int datasize, int length){
                     disassemble(sp, fp, ip, opcode, ins, code, stack);
             }
             switch(opcode){
+                case IINC:
+                    stack[sp]++;
+                    break;
+                case IDEC:
+                    stack[sp]--;
+                    break;
                 case LOAD:
                     stack[++sp] = stack[code[ip++]+fp];
                     break;
