@@ -4,7 +4,7 @@
 
 const char* opcodes[] = {"IADD", "ISUB", "IMULT", "IDIV", "IMOD",
     "ILT", "IEQ", "IGT", "BR", "BRT", "BRF", "ICONST", "LOAD", "GLOAD",
-    "STORE", "GSTORE", "PRINT", "POP", "HALT", "LEQ", "GEQ", "CALL", "RET",
+    "STORE", "GSTORE", "PRINT", "POP", "HALT", "ILEQ", "IGEQ", "CALL", "RET",
     "IPRINT", "FETCH", "IINC", "IDEC" };
 
 int nargs[] = { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 

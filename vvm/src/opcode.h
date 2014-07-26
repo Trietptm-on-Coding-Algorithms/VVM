@@ -19,8 +19,8 @@
 #define PRINT 17
 #define POP 18
 #define HALT 19
-#define LEQ 20
-#define GEQ 21
+#define ILEQ 20
+#define IGEQ 21
 #define CALL 22
 #define RET 23
 #define IPRINT 24
