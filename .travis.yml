@@ -1,0 +1,11 @@
+language: c
+
+compiler:
+    - clang
+    -gcc
+
+build:
+    - cd vvm
+    - make && bin/vvm && make clean
+    - cd ../nbfi
+    - make && bash test.sh && make clean
