@@ -2,6 +2,6 @@ language: c
 
 compiler:
     - clang
-    -gcc
+    - gcc
 
 script: cd vvm && make && bin/vvm && make clean && cd ../nbfi && make && bash test.sh && make clean
