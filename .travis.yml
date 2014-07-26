@@ -4,8 +4,4 @@ compiler:
     - clang
     -gcc
 
-script:
-    - cd vvm
-    - make && bin/vvm && make clean
-    - cd ../nbfi
-    - make && bash test.sh && make clean
+script: cd vvm && make && bin/vvm && make clean && cd ../nbfi && make && bash test.sh && make clean
