@@ -96,12 +96,12 @@ void vm_execute(int code[], int ip, int datasize, int length){
                     a = stack[sp--];
                     stack[++sp] = a > b ? TRUE : FALSE;
                     break;
-                case LEQ:
+                case ILEQ:
                     b = stack[sp--];
                     a = stack[sp--];
                     stack[++sp] = a <= b ? TRUE : FALSE;
                     break;
-                case GEQ:
+                case IGEQ:
                     b = stack[sp--];
                     a = stack[sp--];
                     stack[++sp] = a >= b ? TRUE : FALSE;
