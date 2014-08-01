@@ -10,6 +10,8 @@ Instruction set
 Up until now, all the operations are executed on integers(hence the
 I\* prefix).
 
+*Operations overview*:
+
 IADD - Adds the two items to each other that are on top of the stack
 and stores the result on top of the stack.
 ISUB - Subtracts the two items from each other that are on top of the
