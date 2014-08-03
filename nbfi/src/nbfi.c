@@ -26,16 +26,16 @@ static inline void die(int code, const char* message){
 }
 
 struct instruction_t{
-    unsigned short operator;
-    unsigned short operand;
+    unsigned int operator;
+    unsigned int operand;
 };
 
 static struct instruction_t program[PROGRAM_SIZE];
-static unsigned short stack[MAX_SIZE];
-static unsigned int sp = 0;
+static unsigned int stack[MAX_SIZE];
+static unsigned long sp = 0;
 
 void compile(FILE* fp){
-    unsigned short pc = 0, jmp_pc;
+    unsigned int pc = 0, jmp_pc;
     int ip;
     while ((ip = getc(fp)) != EOF && pc < MAX_SIZE){
         switch (ip) {
@@ -73,7 +73,7 @@ void compile(FILE* fp){
 }
 
 void execute(){
-    unsigned short data[DATA_SIZE], pc = 0;
+    unsigned int data[DATA_SIZE], pc = 0;
     unsigned int ptr = DATA_SIZE;
     while (--ptr) data[ptr] = 0;
     while (program[pc].operator != OP_END && ptr < DATA_SIZE){
@@ -82,8 +82,8 @@ void execute(){
             case OP_DEC_DP: ptr--; break;
             case OP_INC_VAL: data[ptr]++; break;
             case OP_DEC_VAL: data[ptr]--; break;
-            case OP_OUT: putchar(data[ptr]); break;
-            case OP_IN: data[ptr] = (short unsigned int)getchar(); break;
+            case OP_OUT: putchar((signed int)data[ptr]); break;
+            case OP_IN: data[ptr] = (unsigned int)getchar(); break;
             case OP_JMP_FWD: if(!data[ptr]) { pc = program[pc].operand; } break;
             case OP_JMP_BCK: if(data[ptr]) { pc = program[pc].operand; } break;
             default: die(2, "Unknown instruction.");
