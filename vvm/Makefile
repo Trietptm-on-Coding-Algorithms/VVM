@@ -20,12 +20,12 @@ clean:
 
 #Installs into specified(or default) directory
 install:
-	install -d $(PREFIX)/VVM
-	install $(BUILDDIR)$(TARGET) $(PREFIX)/VVM
+	install -d $(PREFIX)/vvm
+	install $(BUILDDIR)$(TARGET) $(PREFIX)/vvm
 
 #Uninstalls from specified(or default)directory
 uninstall:
-	rm -rf $(PREFIX)/VVM
+	rm -rf $(PREFIX)/vvm
 
 #Checks for bad functions
 BADFUNCS='[^_.>a-zA-Z0-9](str(n?cpy|n?cat|xfrm|n?dup|str|pbrk|tok|_)|stpn?cpy|a?sn?printf|byte_)'

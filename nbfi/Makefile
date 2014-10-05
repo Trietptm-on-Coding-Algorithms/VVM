@@ -9,7 +9,9 @@ SOURCES=$(wildcard src/*.c)
 all:
 	mkdir $(BUILDDIR)  2> /dev/null || true
 	cc $(CFLAGS) $(SOURCES) -o $(BUILDDIR)$(TARGET)
-	@echo Running tests
+	@echo
+	@echo Running tests:
+	@echo
 	./test.sh
 
 #Uses picky extensions and makes everything(Extensions may break compiling)
@@ -22,12 +24,12 @@ clean:
 
 #Installs into specified(or default) directory
 install:
-	install -d $(PREFIX)/NBFI
-	install $(BUILDDIR)$(TARGET) $(PREFIX)/NBFI
+	install -d $(PREFIX)/nbfi
+	install $(BUILDDIR)$(TARGET) $(PREFIX)/nbfi
 
 #Uninstalls from specified(or default)directory
 uninstall:
-	rm -rf $(PREFIX)/NBFI
+	rm -rf $(PREFIX)/nbfi
 
 #Checks for bad functions
 BADFUNCS='[^_.>a-zA-Z0-9](str(n?cpy|n?cat|xfrm|n?dup|str|pbrk|tok|_)|stpn?cpy|a?sn?printf|byte_)'
