@@ -12,6 +12,10 @@ all:
 	@echo
 	@echo Running tests:
 	@echo
+	make tests
+
+# Runs the tests
+tests:
 	./test.sh
 
 #Uses picky extensions and makes everything(Extensions may break compiling)
