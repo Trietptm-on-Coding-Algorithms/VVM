@@ -3,6 +3,25 @@ Veits Virtual Machine
 
 A virtual machine that executes assembler-like code.
 
+Performance
+-----------
+
+Performance is pretty okay on basic, small programs. The included factorial
+function takes 0.1 second on 100000 iterations. As a scale, a Python 3.3 program
+on the same machine using the code:
+
+``
+def fac(n):
+    if n < 2: return 1
+    else: return n * fac(n-1)
+fac(12)
+``
+
+takes about 3.7 seconds on 100000 iterations.
+
+This does not say anything about overall performance though and I am not
+sure whether this small, funny test has any real value in measuring performance.
+Also, Python is much more feature-rich, so you cannot compare the two at all.
 
 Instruction set
 ---------------

@@ -5,6 +5,19 @@
 #define FALSE 0
 #define DEBUG FALSE
 
+/**
+ * @brief disassemble
+ * @param sp -> stack pointer
+ * @param fp -> function pointer
+ * @param ip -> instruction pointer
+ * @param opcode -> current opcode
+ * @param ins -> instruction struct
+ * @param code -> opcodes
+ * @param stack -> stack
+ *
+ * prints current operations and a stack trace.
+ * Is invoked if DEBUG is defined.
+ */
 static inline void disassemble(int sp, int fp, int ip, int opcode, instruction* ins, int code[], int stack[]){
     if(opcode > 0 && opcode < 24)
         printf("%04d: %s(%d)\n", ip, ins[opcode].name, opcode);

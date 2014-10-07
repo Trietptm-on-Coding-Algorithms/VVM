@@ -1,5 +1,6 @@
 #include "vm.h"
 
+/*A factorial program in my dsl*/
 int factorial[] = {
     LOAD, -3,
     ICONST, 2,
@@ -20,7 +21,11 @@ int factorial[] = {
     HALT
 };
 
-
+/**
+ * @brief main
+ *
+ * executes code in my dsl.
+ */
 int main(){
     int code[] = { ICONST, 72, PRINT, ICONST, 101, PRINT, ICONST, 108, 
         PRINT, ICONST, 108, PRINT, ICONST, 111, PRINT, ICONST, 44, PRINT, 

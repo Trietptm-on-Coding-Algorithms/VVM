@@ -3,8 +3,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define LENGTH(x) (sizeof(x) / sizeof(x[0]))
-
+/**
+ * @brief die
+ * @param code -> the error code
+ * @param message -> the error message
+ *
+ * Lets the program die and emits an error message.
+ */
 static inline void die(int code, const char* message){
     fprintf(stderr, "%s", message);
     exit(code);
