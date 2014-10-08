@@ -12,7 +12,6 @@ all:
 	@echo
 	@echo Running tests:
 	@echo
-	make tests
 
 # Runs the tests
 tests:

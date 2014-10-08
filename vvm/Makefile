@@ -1,5 +1,5 @@
 override CFLAGS+=-Werror -Wall -g -fPIC -O2 -DNDEBUG -ftrapv -Wfloat-equal -Wundef -Wwrite-strings -Wconversion -Wuninitialized
-DEBUG+=-DEBUG=1
+DEBUG+=-DDEBUG=1
 PREFIX=/usr/bin
 BUILDDIR=bin/
 
@@ -15,6 +15,7 @@ all:
 dev:
 	make all CFLAGS+=-Wshadow -Wunreachable-code -Wswitch-enum -Wswitch-default -Wcast-align -Winit-self -Wpointer-arith -Weffc++
 
+#Makes a debug build
 debug:
 	mkdir $(BUILDDIR)  2> /dev/null || true
 	cc $(CFLAGS) $(DEBUG) $(SOURCES) -o $(BUILDDIR)$(TARGET)
