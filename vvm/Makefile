@@ -1,5 +1,5 @@
 override CFLAGS+=-Werror -Wall -g -fPIC -O2 -DNDEBUG -ftrapv -Wfloat-equal -Wundef -Wwrite-strings -Wconversion -Wuninitialized
-DEBUG+=-DDEBUG=1
+DEBUG+=-DDEBUG_ON
 PREFIX=/usr/bin
 BUILDDIR=bin/
 

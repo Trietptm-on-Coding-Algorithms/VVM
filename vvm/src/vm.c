@@ -1,10 +1,5 @@
 #include "vm.h"
 
-#define MAX_SIZE 4096
-#define TRUE 1
-#define FALSE 0
-#define DEBUG FALSE
-
 /**
  * @brief disassemble
  * @param sp -> stack pointer

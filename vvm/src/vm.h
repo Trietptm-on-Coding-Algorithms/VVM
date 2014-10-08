@@ -8,6 +8,15 @@
 #include "util.h"
 #include "opcode.h"
 
+#define MAX_SIZE 4096
+#define TRUE 1
+#define FALSE 0
+#ifdef DEBUG_ON
+  #define DEBUG TRUE
+#else
+  #define DEBUG FALSE
+#endif
+
 typedef struct{
     unsigned long length;
     int entrypoint;
