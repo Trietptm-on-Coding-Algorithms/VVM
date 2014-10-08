@@ -178,6 +178,7 @@ program vm_parse(char *filename){
     instruction* ins = setup_instructions();
     unsigned int len = IDEC;
     size_t linelength = 0;
+    int entry = 0;
     
     if(!file)
         die(127, "Could not open file.");
@@ -194,17 +195,21 @@ program vm_parse(char *filename){
                 die(127, "Program too big, could not allocate enough storage.");
         }
 
-        for(i = 1; i < len; i++)
-            if(strcmp(ins[i].name, command[0]) == 0){
-                code[codep++] = i;
-                found = TRUE;
-                break;
-            }
+        if(strcmp(command[0], "ENTRY") == 0){
+            entry = (int) strtol(command[1], (char **) NULL, 10);
+        }else{
+            for(i = 1; i < len; i++)
+                if(strcmp(ins[i].name, command[0]) == 0){
+                    code[codep++] = i;
+                    found = TRUE;
+                    break;
+                }
 
-        if(found && ins[i].operands > 0){
-            int nargs = ins[i].operands;
-            for(i = 1; i <= nargs; i++){
-                code[codep++] = (int) strtol(command[i], (char **) NULL, 10);
+            if(found && ins[i].operands > 0){
+                int nargs = ins[i].operands;
+                for(i = 1; i <= nargs; i++){
+                    code[codep++] = (int) strtol(command[i], (char **) NULL, 10);
+                }
             }
         }
     }
@@ -216,7 +221,7 @@ program vm_parse(char *filename){
 
     code = (int *) realloc(code, codep * sizeof(int));
     
-    program prog = {codep, code};
+    program prog = {codep, entry, code};
 
     return prog;
 }

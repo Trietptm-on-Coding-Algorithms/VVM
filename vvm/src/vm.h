@@ -10,6 +10,7 @@
 
 typedef struct{
     unsigned long length;
+    int entrypoint;
     int* code;
 } program;
 
