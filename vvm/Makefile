@@ -1,4 +1,5 @@
 override CFLAGS+=-Werror -Wall -g -fPIC -O2 -DNDEBUG -std=c99 -ftrapv -Wfloat-equal -Wundef -Wwrite-strings -Wconversion -Wuninitialized
+DEBUG+=-DEBUG=1
 PREFIX=/usr/bin
 BUILDDIR=bin/
 
@@ -13,6 +14,10 @@ all:
 #Uses picky extensions and makes everything(Extensions may break compiling)
 dev:
 	make all CFLAGS+=-Wshadow -Wunreachable-code -Wswitch-enum -Wswitch-default -Wcast-align -Winit-self -Wpointer-arith -Weffc++
+
+debug:
+	mkdir $(BUILDDIR)  2> /dev/null || true
+	cc $(CFLAGS) $(DEBUG) $(SOURCES) -o $(BUILDDIR)$(TARGET)
 
 #Cleans directory(no uninstall!)
 clean:
