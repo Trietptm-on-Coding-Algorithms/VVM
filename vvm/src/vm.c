@@ -32,7 +32,7 @@ static inline void disassemble(int sp, int fp, int ip, int opcode, instruction* 
     printf("\n");
 }
 
-void vm_execute(int code[], int ip, int datasize, int length){
+void vm_execute(int code[], int ip, int datasize, unsigned long length){
         int data[datasize];
         int stack[MAX_SIZE];
         int sp = -1;
@@ -161,8 +161,101 @@ void vm_execute(int code[], int ip, int datasize, int length){
                     sp--;
                 default:
                     fprintf(stderr, "Unrecognized: %d\n", opcode);
-                    die(1, "Exit on program failure.");
+                    die(127, "Exit on program failure.");
             }
         }
         return;
+}
+
+program vm_parse(char *filename){
+    FILE* file = fopen(filename, "r");
+    char* line = NULL;
+    char** command;
+    unsigned long size = 100;
+    int* code = malloc(size * sizeof(int));
+    unsigned long codep = 0;
+    register int i;
+    instruction* ins = setup_instructions();
+    unsigned int len = IDEC;
+    size_t linelength = 0;
+    
+    if(!file)
+        die(127, "Could not open file.");
+
+    while(getline(&line, &linelength, file) != -1){
+        short found = FALSE;
+        strtok(line, "\n");
+        command = str_split(line, ' ');
+
+        if(codep == size){
+            size += 100;
+            code = (int *) realloc(code, size * sizeof(int));
+            if(code == NULL)
+                die(127, "Program too big, could not allocate enough storage.");
+        }
+
+        for(i = 1; i < len; i++)
+            if(strcmp(ins[i].name, command[0]) == 0){
+                code[codep++] = i;
+                found = TRUE;
+                break;
+            }
+
+        if(found && ins[i].operands > 0){
+            int nargs = ins[i].operands;
+            for(i = 1; i <= nargs; i++){
+                code[codep++] = (int) strtol(command[i], (char **) NULL, 10);
+            }
+        }
+    }
+    
+    fclose(file);
+
+    if(line)
+        free(line);
+
+    code = (int *) realloc(code, codep * sizeof(int));
+    
+    program prog = {codep, code};
+
+    return prog;
+}
+
+char** str_split(char* a_str, const char a_delim){
+    char** result    = 0;
+    size_t count     = 0;
+    char* tmp        = a_str;
+    char* last_comma = 0;
+    char delim[2];
+    delim[0] = a_delim;
+    delim[1] = 0;
+
+    while (*tmp){
+        if (a_delim == *tmp){
+            count++;
+            last_comma = tmp;
+        }
+        tmp++;
+    }
+
+    count += last_comma < (a_str + strlen(a_str) - 1);
+
+    count++;
+
+    result = malloc(sizeof(char*) * count);
+
+    if (result){
+        size_t idx  = 0;
+        char* token = strtok(a_str, delim);
+
+        while (token){
+            assert(idx < count);
+            *(result + idx++) = strdup(token);
+            token = strtok(0, delim);
+        }
+        assert(idx == count - 1);
+        *(result + idx) = 0;
+    }
+
+    return result;
 }

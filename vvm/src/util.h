@@ -11,7 +11,7 @@
  * Lets the program die and emits an error message.
  */
 static inline void die(int code, const char* message){
-    fprintf(stderr, "%s", message);
+    fprintf(stderr, "%s\n", message);
     exit(code);
 }
 #endif
