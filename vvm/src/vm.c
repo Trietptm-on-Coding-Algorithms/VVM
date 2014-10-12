@@ -180,8 +180,9 @@ program vm_parse(char *filename){
 
     while(getline(&line, &linelength, file) != -1){
         short found = FALSE;
+        unsigned int elemc = 0;
         strtok(line, "\n");
-        command = str_split(line, ' ');
+        command = str_split(line, ' ', &elemc);
 
         if(codep == size){
             size += 100;
@@ -202,6 +203,12 @@ program vm_parse(char *filename){
 
             if(found && ins[i].operands > 0){
                 int nargs = ins[i].operands;
+                if(nargs != elemc-1){
+                    fprintf(stderr, 
+                            "Line %s called with wrong number of arguments\
+                            (got %d, expected %d)\n", line, elemc-1, nargs);
+                    die(127, "Compilation failed.");
+                }
                 for(i = 1; i <= nargs; i++){
                     code[codep++] = (int) strtol(command[i], (char **) NULL, 10);
                 }
@@ -221,9 +228,8 @@ program vm_parse(char *filename){
     return prog;
 }
 
-char** str_split(char* a_str, const char a_delim){
+char** str_split(char* a_str, const char a_delim, unsigned int* elemc){
     char** result    = 0;
-    size_t count     = 0;
     char* tmp        = a_str;
     char* last_comma = 0;
     char delim[2];
@@ -232,30 +238,32 @@ char** str_split(char* a_str, const char a_delim){
 
     while (*tmp){
         if (a_delim == *tmp){
-            count++;
+            (*elemc)++;
             last_comma = tmp;
         }
         tmp++;
     }
 
-    count += last_comma < (a_str + strlen(a_str) - 1);
+    *elemc += last_comma < (a_str + strlen(a_str) - 1);
 
-    count++;
+    (*elemc)++;
 
-    result = malloc(sizeof(char*) * count);
+    result = malloc(sizeof(char*) * *elemc);
 
     if (result){
         size_t idx  = 0;
         char* token = strtok(a_str, delim);
 
         while (token){
-            assert(idx < count);
+            assert(idx < *elemc);
             *(result + idx++) = strdup(token);
             token = strtok(0, delim);
         }
-        assert(idx == count - 1);
+        assert(idx == *elemc - 1);
         *(result + idx) = 0;
     }
+
+    (*elemc)--;
 
     return result;
 }

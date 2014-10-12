@@ -38,6 +38,13 @@ void vm_execute(int[], int, int, unsigned long);
  */
 program vm_parse(char*);
 
-char** str_split(char*, const char);
+/**
+ * @brief str_split
+ * @param a_str -> the input string
+ * @param a_delim -> the delimiter
+ * @param elemc -> the counter of elements
+ *
+ */
+char** str_split(char*, const char, unsigned int*);
 
 #endif
