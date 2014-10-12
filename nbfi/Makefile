@@ -12,6 +12,8 @@ all:
 	@echo
 	@echo Running tests:
 	@echo
+	make tests
+	@echo Compilation successfull.
 
 # Runs the tests
 tests:

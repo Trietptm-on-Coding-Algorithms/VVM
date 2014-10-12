@@ -45,7 +45,7 @@
  * Lets the program die and emits an error message.
  */
 static inline void die(int code, const char* message){
-    fprintf(stderr, "%s", message);
+    fprintf(stderr, "%s\n", message);
     exit(code);
 }
 
@@ -88,12 +88,12 @@ void compile(FILE* fp){
             case '[':
                 program[pc].operator = JMP_FWD;
                 if (FULL())
-                    die(127, "nbfi:compile: Cannot jump forwards: Stack is full.\n");
+                    die(127, "nbfi:compile: Cannot jump forwards: Stack is full.");
                 PUSH(pc);
                 break;
             case ']':
                 if (EMPTY())
-                    die(127, "nbfi:compile: Cannot jump backwards: Stack is full.\n");
+                    die(127, "nbfi:compile: Cannot jump backwards: Stack is full.");
                 jmp_pc = POP();
                 program[pc].operator = JMP_BCK;
                 program[pc].operand = jmp_pc;
@@ -108,7 +108,7 @@ void compile(FILE* fp){
         pc++;
     }
     if(!EMPTY())
-        die(117, "nbfi:compile: Program ends with non-empty stack.");
+        die(127, "nbfi:compile: Program ends with non-empty stack.");
     if(pc == MAX_SIZE)
         die(127, "nbfi:compile: Program exceeds maximum program size.");
     program[pc].operator = END;
@@ -133,12 +133,12 @@ void execute(){
             case IN: data[ptr] = (unsigned int)getchar(); break;
             case JMP_FWD: if(!data[ptr]) { pc = program[pc].operand; } break;
             case JMP_BCK: if(data[ptr]) { pc = program[pc].operand; } break;
-            default: die(127, "nbfi:execute: Unknown instruction.\n");
+            default: die(127, "nbfi:execute: Unknown instruction.");
         }
         pc++;
     }
     if(ptr == DATA_SIZE)
-        die(127, "nbfi:execute: Program used up too much memory.\n");
+        die(127, "nbfi:execute: Program used up too much memory.");
 }
 
 /*
@@ -151,9 +151,9 @@ void execute(){
 int main(int argc, const char * argv[]){
     FILE *fp;
     if(argc != 2)
-        die(127, "nbfi:parse: Wrong number of arguments supplied.\n");
+        die(127, "nbfi:parse: Wrong number of arguments supplied.");
     if(!(fp = fopen(argv[1], "r")))
-        die(1, "nbfi:parse: File could not be opened.\n");
+        die(127, "nbfi:parse: File could not be opened.");
     compile(fp);
     fclose(fp);
     execute();
