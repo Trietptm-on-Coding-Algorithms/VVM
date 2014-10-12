@@ -194,6 +194,8 @@ program vm_parse(char *filename){
         if(strcmp(command[0], "ENTRY") == 0){
             entry = (int) strtol(command[1], (char **) NULL, 10);
         }else{
+            if(strcmp("\n", command[0]) == 0)
+                continue;
             for(i = 1; i < len; i++)
                 if(strcmp(ins[i].name, command[0]) == 0){
                     code[codep++] = i;
@@ -201,12 +203,19 @@ program vm_parse(char *filename){
                     break;
                 }
 
-            if(found && ins[i].operands > 0){
+            if(found == FALSE){
+                fprintf(stderr, 
+                        "Line %s called with unknown command: %s\n", 
+                        line, command[0]);
+                die(127, "Compilation failed.");
+            }
+
+            if(ins[i].operands > 0){
                 int nargs = ins[i].operands;
                 if(nargs != elemc-1){
                     fprintf(stderr, 
-                            "Line %s called with wrong number of arguments\
-                            (got %d, expected %d)\n", line, elemc-1, nargs);
+                            "Line %s called with wrong number of arguments (got %d, expected %d)\n", 
+                            line, elemc-1, nargs);
                     die(127, "Compilation failed.");
                 }
                 for(i = 1; i <= nargs; i++){
