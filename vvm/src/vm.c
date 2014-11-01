@@ -237,6 +237,8 @@ program vm_parse(char *filename){
     prog.entrypoint = entry;
     prog.code = code;
 
+    free(command);
+
     return prog;
 }
 

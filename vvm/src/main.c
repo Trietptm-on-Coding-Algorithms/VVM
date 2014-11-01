@@ -13,5 +13,6 @@ int main(int argc, char** argv){
         die(127, "Please specify exactly one file to execute.");
     prog = vm_parse(argv[1]);
     vm_execute(prog.code, prog.entrypoint, 0, prog.length);
+    free(prog.code);
     return 0;
 }
