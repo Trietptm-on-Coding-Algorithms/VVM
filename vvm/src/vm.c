@@ -159,6 +159,9 @@ void vm_execute(int code[], int ip, int datasize, unsigned long length){
                     die(127, "Exit on program failure.");
             }
         }
+
+        free(data);
+
         return;
 }
 
