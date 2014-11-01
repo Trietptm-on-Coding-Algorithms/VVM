@@ -28,7 +28,7 @@ static inline void disassemble(int sp, int fp, int ip, int opcode, instruction* 
 }
 
 void vm_execute(int code[], int ip, int datasize, unsigned long length){
-        int* data = (int *) malloc((unsigned long)datasize * sizeof(int));
+        int* data = (int *) alloca((size_t)datasize * sizeof(int));
         int stack[MAX_SIZE];
         int sp = -1;
         int fp = -1;
@@ -159,9 +159,6 @@ void vm_execute(int code[], int ip, int datasize, unsigned long length){
                     die(127, "Exit on program failure.");
             }
         }
-
-        free(data);
-
         return;
 }
 
