@@ -232,7 +232,10 @@ program vm_parse(char *filename){
 
     code = (int *) realloc(code, codep * sizeof(int));
     
-    program prog = {codep, entry, code};
+    program prog;
+    prog.length = codep;
+    prog.entrypoint = entry;
+    prog.code = code;
 
     return prog;
 }
