@@ -14,13 +14,13 @@
  * Is invoked if DEBUG is defined.
  */
 static inline void disassemble(int sp, int fp, int ip, int opcode, instruction* ins, int code[], int stack[]){
+    int i;
     if(opcode > 0 && opcode < 24)
         printf("%04d: %s(%d)\n", ip, ins[opcode].name, opcode);
     if(ins[opcode].operands == 1)
         printf("\t%d\n", code[ip+1]);
     else if(ins[opcode].operands == 2)
         printf("\t%d, %d\n", code[ip+1], code[ip+2]);
-    int i;
     printf("\n===Stack trace===\n");
     for(i = sp; i >= 0; i--)
         printf("%04d: %d\n", i, stack[i]);
@@ -28,7 +28,7 @@ static inline void disassemble(int sp, int fp, int ip, int opcode, instruction* 
 }
 
 void vm_execute(int code[], int ip, int datasize, unsigned long length){
-        int data[datasize];
+        int* data = (int *) malloc((unsigned long)datasize * sizeof(int));
         int stack[MAX_SIZE];
         int sp = -1;
         int fp = -1;
@@ -174,6 +174,7 @@ program vm_parse(char *filename){
     unsigned int len = IDEC;
     size_t linelength = 0;
     int entry = 0;
+    program prog;
     
     if(!file)
         die(127, "Could not open file.");
@@ -232,7 +233,6 @@ program vm_parse(char *filename){
 
     code = (int *) realloc(code, codep * sizeof(int));
     
-    program prog;
     prog.length = codep;
     prog.entrypoint = entry;
     prog.code = code;
