@@ -1,4 +1,4 @@
-override CFLAGS+=-Werror -Wall -g -fPIC -O2 -DNDEBUG -std=c99 -ftrapv -Wfloat-equal -Wundef -Wwrite-strings -Wconversion -Wuninitialized
+override CFLAGS+=-Werror -Wall -g -fPIC -O2 -DNDEBUG -std=c99 -ftrapv -Wfloat-equal -Wundef -Wwrite-strings -Wconversion -Wuninitialized -pedantic
 PREFIX=/usr/bin
 BUILDDIR=bin/
 
