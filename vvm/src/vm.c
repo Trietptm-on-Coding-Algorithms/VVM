@@ -165,7 +165,7 @@ void vm_execute(int code[], int ip, int datasize, unsigned long length){
 program vm_parse(char *filename){
     FILE* file = fopen(filename, "r");
     char* line = NULL;
-    char** command;
+    char** command = NULL;
     unsigned long size = 100;
     int* code = malloc(size * sizeof(int));
     unsigned long codep = 0;
@@ -237,7 +237,8 @@ program vm_parse(char *filename){
     prog.entrypoint = entry;
     prog.code = code;
 
-    free(command);
+    if(command != NULL)
+        free(command);
 
     return prog;
 }
