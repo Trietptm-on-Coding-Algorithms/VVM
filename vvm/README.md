@@ -23,6 +23,9 @@ This does not say anything about overall performance though and I am not
 sure whether this small, funny test has any real value in measuring performance.
 Also, Python is much more feature-rich, so you cannot compare the two at all.
 
+DISCLAIMER: Parsing takes quite a long time, so try to write your programs as 
+concise as possible.
+
 Instruction set
 ---------------
 
