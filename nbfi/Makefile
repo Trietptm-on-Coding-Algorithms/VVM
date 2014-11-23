@@ -21,7 +21,7 @@ tests:
 
 #Uses picky extensions and makes everything(Extensions may break compiling)
 dev:
-	make all CFLAGS+=-Wshadow -Wunreachable-code -Wswitch-enum -Wswitch-default -Wcast-align -Winit-self -Wpointer-arith -Weffc++
+	make all CFLAGS+=-Wshadow -Wunreachable-code -Wswitch-enum -Wswitch-default -Wcast-align -Winit-self -Wpointer-arith
 
 #Cleans directory(no uninstall!)
 clean:
