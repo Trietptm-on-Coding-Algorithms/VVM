@@ -37,7 +37,7 @@ void vm_execute(int[], int, int, unsigned long);
  * @brief vm_parse
  * @param file -> filename
  */
-program vm_parse(char*);
+program vm_compile(char*);
 
 /**
  * @brief str_split

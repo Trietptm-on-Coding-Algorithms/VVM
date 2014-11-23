@@ -30,8 +30,8 @@ static inline void disassemble(int sp, int fp, int ip, int opcode, instruction* 
 void vm_execute(int code[], int ip, int datasize, unsigned long length){
         int* data = (int *) alloca((size_t)datasize * sizeof(int));
         int stack[MAX_SIZE];
-        int sp = -1;
-        int fp = -1;
+        register int sp = -1;
+        register int fp = -1;
         int nargs, addr, a, b;
         instruction* ins = setup_instructions();
         while(ip < length){
@@ -162,7 +162,7 @@ void vm_execute(int code[], int ip, int datasize, unsigned long length){
         return;
 }
 
-program vm_parse(char *filename){
+program vm_compile(char *filename){
     FILE* file = fopen(filename, "r");
     char* line = NULL;
     char** command = NULL;
