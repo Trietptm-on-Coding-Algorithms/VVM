@@ -4,4 +4,4 @@ compiler:
     - clang
     - gcc
 
-script: cd vvm && make && bash test.sh && make clean
+script: make && bash test.sh && make clean
