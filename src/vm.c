@@ -33,7 +33,9 @@ void vm_execute(int code[], int ip, int datasize, unsigned long length){
         register int sp = -1;
         register int fp = -1;
         int nargs, addr, a, b;
+        
         instruction* ins = setup_instructions();
+        
         while(ip < length){
             int opcode = code[ip];
             ip++;
@@ -168,6 +170,7 @@ program vm_compile(char *filename){
     char** command = NULL;
     unsigned long size = 100;
     int* code = malloc(size * sizeof(int));
+    int* code_realloc = NULL;
     unsigned long codep = 0;
     register int i;
     instruction* ins = setup_instructions();
@@ -187,9 +190,13 @@ program vm_compile(char *filename){
 
         if(codep == size){
             size += 100;
-            code = (int *) realloc(code, size * sizeof(int));
-            if(code == NULL)
+            code_realloc = (int *) realloc(code, size * sizeof(int));
+            if(code_realloc == NULL){
+                free(code);
                 die(127, "Program too big, could not allocate enough storage.");
+            }
+            code = code_realloc;
+            code_realloc = NULL;
         }
 
         if(strcmp(command[0], "ENTRY") == 0){
@@ -231,7 +238,11 @@ program vm_compile(char *filename){
     if(line)
         free(line);
 
-    code = (int *) realloc(code, codep * sizeof(int));
+    code_realloc = (int *) realloc(code, codep * sizeof(int));
+    if(code_realloc != NULL){
+        code = code_realloc;
+        code_realloc = NULL;
+    }
     
     prog.length = codep;
     prog.entrypoint = entry;

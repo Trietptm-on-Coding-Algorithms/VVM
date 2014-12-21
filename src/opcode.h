@@ -1,59 +1,61 @@
 #ifndef OPCODE_H
 #define OPCODE_H
+enum {
 /*Addition operation*/
-#define IADD 1
+    IADD = 1,
 /*Subtraction operation*/
-#define ISUB 2
+    ISUB,
 /*Multiplication operation*/
-#define IMULT 3
+    IMULT,
 /*Division operation*/
-#define IDIV 4
+    IDIV,
 /*Modulo operation*/
-#define IMOD 5
+    IMOD,
 /*< operation*/
-#define ILT 6
+    ILT,
 /*== operation*/
-#define IEQ 7
+    IEQ,
 /*> operation*/
-#define IGT 8
+    IGT,
 /*branch operation*/
-#define BR 9
+    BR,
 /*branch if true operation*/
-#define BRT 10
+    BRT,
 /*branch if false operation*/
-#define BRF 11
+    BRF,
 /*put operation*/
-#define ICONST 12
+    ICONST,
 /*load variable operation*/
-#define LOAD 13
+    LOAD,
 /*load global variable operation*/
-#define GLOAD 14
+    GLOAD,
 /*store variable operation*/
-#define STORE 15
+    STORE,
 /*store global variable operation*/
-#define GSTORE 16
+    GSTORE,
 /*print operation*/
-#define PRINT 17
+    PRINT,
 /*pop operation*/
-#define POP 18
+    POP,
 /*end/halt operation*/
-#define HALT 19
+    HALT,
 /*<= operation*/
-#define ILEQ 20
+    ILEQ,
 /*>= operation*/
-#define IGEQ 21
+    IGEQ,
 /*call subroutine operation*/
-#define CALL 22
+    CALL,
 /*return from subroutine operation*/
-#define RET 23
+    RET,
 /*print integer operation*/
-#define IPRINT 24
+    IPRINT,
 /*fetch operation*/
-#define FETCH 25 
+    FETCH,
 /*++ operation*/
-#define IINC 26
+    IINC,
 /*-- operation*/
-#define IDEC 27 
+    IDEC
+};
 
 /**
  * @brief An instruction struct
