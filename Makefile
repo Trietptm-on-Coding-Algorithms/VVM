@@ -20,6 +20,10 @@ debug:
 	mkdir $(BUILDDIR)  2> /dev/null || true
 	cc $(CFLAGS) $(DEBUG) $(SOURCES) -o $(BUILDDIR)$(TARGET)
 
+#Runs all tests
+runtests:
+	./test.sh
+
 #Cleans directory(no uninstall!)
 clean:
 	rm -rf bin
