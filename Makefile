@@ -1,5 +1,5 @@
-STD=-std=c11
-override CFLAGS+=-Werror -Wall -g -fPIC -O2 -DNDEBUG -ftrapv -Wfloat-equal -Wundef -Wwrite-strings -Wconversion -Wuninitialized -pedantic -fsanitize=address $(STD)
+STD=-ansi
+override CFLAGS+=-Werror -Wall -g -fPIC -O2 -DNDEBUG -ftrapv -Wfloat-equal -Wundef -Wwrite-strings -Wconversion -Wuninitialized -pedantic $(STD)
 DEBUG+=-DDEBUG_ON
 PREFIX=/usr/bin/
 BUILDDIR=bin/
@@ -16,7 +16,7 @@ all:
 
 #Uses picky extensions and makes everything(Extensions may break compiling)
 dev:
-	make all CFLAGS+="-Wshadow -Wunreachable-code -Wswitch-enum -Wswitch-default -Wcast-align -Winit-self -Wpointer-arith"
+	make all CFLAGS+="-Wshadow -Wunreachable-code -Wswitch-enum -Wswitch-default -Wcast-align -Winit-self -Wpointer-arith -fsanitize=address"
 
 #Makes a debug build
 debug:
