@@ -1,7 +1,10 @@
-override CFLAGS+=-Werror -Wall -g -fPIC -O2 -DNDEBUG -ftrapv -Wfloat-equal -Wundef -Wwrite-strings -Wconversion -Wuninitialized -pedantic
+STD=-std=c11
+override CFLAGS+=-Werror -Wall -g -fPIC -O2 -DNDEBUG -ftrapv -Wfloat-equal -Wundef -Wwrite-strings -Wconversion -Wuninitialized -pedantic -fsanitize=address $(STD)
 DEBUG+=-DDEBUG_ON
 PREFIX=/usr/bin/
 BUILDDIR=bin/
+
+CC=cc
 
 TARGET=vvm
 SOURCES=$(wildcard src/*.c)
@@ -9,7 +12,7 @@ SOURCES=$(wildcard src/*.c)
 #Makes everything
 all:
 	mkdir $(BUILDDIR)  2> /dev/null || true
-	cc $(CFLAGS) $(SOURCES) -o $(BUILDDIR)$(TARGET)
+	$(CC) $(CFLAGS) $(SOURCES) -o $(BUILDDIR)$(TARGET)
 
 #Uses picky extensions and makes everything(Extensions may break compiling)
 dev:
@@ -18,7 +21,7 @@ dev:
 #Makes a debug build
 debug:
 	mkdir $(BUILDDIR)  2> /dev/null || true
-	cc $(CFLAGS) $(DEBUG) $(SOURCES) -o $(BUILDDIR)$(TARGET)
+	$(CC) $(CFLAGS) $(DEBUG) $(SOURCES) -o $(BUILDDIR)$(TARGET)
 
 #Runs all tests
 runtests:
