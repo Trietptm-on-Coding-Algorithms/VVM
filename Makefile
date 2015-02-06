@@ -1,4 +1,4 @@
-STD=-ansi
+STD=-std=c99
 override CFLAGS+=-Werror -Wall -g -fPIC -O2 -DNDEBUG -ftrapv -Wfloat-equal -Wundef -Wwrite-strings -Wconversion -Wuninitialized -pedantic $(STD)
 DEBUG+=-DDEBUG_ON
 PREFIX=/usr/bin/
