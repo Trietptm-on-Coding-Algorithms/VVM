@@ -1,5 +1,6 @@
 #ifndef UTIL_H
 #define UTIL_H
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -14,4 +15,5 @@ static inline void die(int code, const char* message){
     fprintf(stderr, "%s\n", message);
     exit(code);
 }
+
 #endif

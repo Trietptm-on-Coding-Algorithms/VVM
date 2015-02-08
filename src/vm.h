@@ -1,21 +1,12 @@
 #ifndef VM_H
 #define VM_H
 
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
-#include <alloca.h>
-
-#include "util.h"
-#include "opcode.h"
-
 #define MAX_SIZE 4096
 #define TRUE 1
 #define FALSE 0
-#ifdef DEBUG_ON
-  #define DEBUG TRUE
-#else
-  #define DEBUG FALSE
+
+#ifndef DEBUG_ON
+#define DEBUG_ON FALSE
 #endif
 
 typedef struct{

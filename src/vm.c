@@ -1,3 +1,10 @@
+#include <stdio.h>
+#include <string.h>
+#include <assert.h>
+#include <alloca.h>
+
+#include "util.h"
+#include "opcode.h"
 #include "vm.h"
 
 /**
@@ -39,7 +46,7 @@ void vm_execute(int code[], int ip, int datasize, unsigned long length){
         while(ip < length){
             int opcode = code[ip];
             ip++;
-            if(DEBUG){
+            if(DEBUG_ON){
                 if(ip+2 != length)
                     disassemble(sp, fp, ip, opcode, ins, code, stack);
             }

@@ -1,5 +1,6 @@
 #ifndef OPCODE_H
 #define OPCODE_H
+
 enum {
 /*Addition operation*/
     IADD = 1,

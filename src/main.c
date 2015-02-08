@@ -1,4 +1,5 @@
 #include "vm.h"
+#include "util.h"
 
 /**
  * @brief main
