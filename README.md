@@ -34,6 +34,8 @@ I\* prefix).
 
 *Operations overview*:
 
+* ENTRY - Specifies an entry point for the routine by its index.
+
 * IADD - Adds the two items to each other that are on top of the stack
 and stores the result on top of the stack.
 
