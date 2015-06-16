@@ -17,10 +17,10 @@ typedef struct{
 
 /**
  * @brief vm_execute
- * @param code -> instructions
- * @param ip -> starting point
+ * @param code     -> instructions
+ * @param ip       -> starting point
  * @param datasize -> maximum data size
- * @param length -> length of program
+ * @param length   -> length of program
  */
 void vm_execute(int[], int, int, unsigned long);
 
@@ -32,9 +32,9 @@ program vm_compile(char*);
 
 /**
  * @brief str_split
- * @param a_str -> the input string
+ * @param a_str   -> the input string
  * @param a_delim -> the delimiter
- * @param elemc -> the counter of elements
+ * @param elemc   -> the counter of elements
  *
  */
 char** str_split(char*, const char, unsigned int*);

@@ -9,13 +9,13 @@
 
 /**
  * @brief disassemble
- * @param sp -> stack pointer
- * @param fp -> function pointer
- * @param ip -> instruction pointer
+ * @param sp     -> stack pointer
+ * @param fp     -> function pointer
+ * @param ip     -> instruction pointer
  * @param opcode -> current opcode
- * @param ins -> instruction struct
- * @param code -> opcodes
- * @param stack -> stack
+ * @param ins    -> instruction struct
+ * @param code   -> opcodes
+ * @param stack  -> stack
  *
  * prints current operations and a stack trace.
  * Is invoked if DEBUG is defined.
@@ -34,25 +34,15 @@ static inline void disassemble(int sp, int fp, int ip, int opcode, instruction* 
     printf("\n");
 }
 
-/**
- * @brief vm_execute
- * @param code     -> a list of opcodes
- * @param ip       -> the instruction pointer
- * @param datasize -> the maximal standard datasize
- * @param length   -> the length of the program
- *
- * the main virtual machine loop. takes opcodes and 
- * metainformation and executes it.
- */
 void vm_execute(int code[], int ip, int datasize, unsigned long length){
         int* data = (int *) alloca((size_t)datasize * sizeof(int));
         int stack[MAX_SIZE];
         register int sp = -1;
         register int fp = -1;
         int nargs, addr, a, b;
-        
+
         instruction* ins = setup_instructions();
-        
+
         while(ip < length){
             int opcode = code[ip];
             ip++;
@@ -195,7 +185,7 @@ program vm_compile(char *filename){
     size_t linelength = 0;
     int entry = 0;
     program prog;
-    
+
     if(!file)
         die(127, "Could not open file.");
 
@@ -229,8 +219,8 @@ program vm_compile(char *filename){
                 }
 
             if(found == FALSE){
-                fprintf(stderr, 
-                        "Line %s called with unknown command: %s\n", 
+                fprintf(stderr,
+                        "Line %s called with unknown command: %s\n",
                         line, command[0]);
                 die(127, "Compilation failed.");
             }
@@ -238,8 +228,8 @@ program vm_compile(char *filename){
             if(ins[i].operands > 0){
                 int nargs = ins[i].operands;
                 if(nargs != elemc-1){
-                    fprintf(stderr, 
-                            "Line %s called with wrong number of arguments (got %d, expected %d)\n", 
+                    fprintf(stderr,
+                            "Line %s called with wrong number of arguments (got %d, expected %d)\n",
                             line, elemc-1, nargs);
                     die(127, "Compilation failed.");
                 }
@@ -249,7 +239,7 @@ program vm_compile(char *filename){
             }
         }
     }
-    
+
     fclose(file);
 
     if(line)
@@ -260,7 +250,7 @@ program vm_compile(char *filename){
         code = code_realloc;
         code_realloc = NULL;
     }
-    
+
     prog.length = codep;
     prog.entrypoint = entry;
     prog.code = code;

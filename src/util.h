@@ -6,7 +6,7 @@
 
 /**
  * @brief die
- * @param code -> the error code
+ * @param code    -> the error code
  * @param message -> the error message
  *
  * Lets the program die and emits an error message.

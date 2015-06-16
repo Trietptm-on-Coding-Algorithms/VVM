@@ -6,7 +6,7 @@
  * argc -> the argument counter
  * argv -> the argument vector
  *
- * executes code in my dsl.
+ * executes code in my dsl/vm.
  */
 int main(int argc, char** argv){
     program prog;

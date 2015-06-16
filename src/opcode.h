@@ -69,7 +69,11 @@ typedef struct{
     const char* name;
 }instruction;
 
-/*sets up the instruction struct*/
+/**
+ * @brief setup_instructions
+ *
+ * sets up the instruction struct for the VM.
+ */
 instruction* setup_instructions();
 
 #endif
