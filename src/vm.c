@@ -34,6 +34,16 @@ static inline void disassemble(int sp, int fp, int ip, int opcode, instruction* 
     printf("\n");
 }
 
+/**
+ * @brief vm_execute
+ * @param code     -> a list of opcodes
+ * @param ip       -> the instruction pointer
+ * @param datasize -> the maximal standard datasize
+ * @param length   -> the length of the program
+ *
+ * the main virtual machine loop. takes opcodes and 
+ * metainformation and executes it.
+ */
 void vm_execute(int code[], int ip, int datasize, unsigned long length){
         int* data = (int *) alloca((size_t)datasize * sizeof(int));
         int stack[MAX_SIZE];
@@ -51,10 +61,10 @@ void vm_execute(int code[], int ip, int datasize, unsigned long length){
                     disassemble(sp, fp, ip, opcode, ins, code, stack);
             }
             switch(opcode){
-                case IINC:
+                case INC:
                     stack[sp]++;
                     break;
-                case IDEC:
+                case DEC:
                     stack[sp]--;
                     break;
                 case LOAD:
@@ -73,57 +83,57 @@ void vm_execute(int code[], int ip, int datasize, unsigned long length){
                     addr = code[ip++];
                     if(stack[sp--] == FALSE) ip = addr;
                     break;
-                case IADD:
+                case ADD:
                     b = stack[sp--];
                     a = stack[sp--];
                     stack[++sp] = a + b;
                     break;
-                case ISUB:
+                case SUB:
                     b = stack[sp--];
                     a = stack[sp--];
                     stack[++sp] = a - b;
                     break;
-                case IMULT:
+                case MULT:
                     b = stack[sp--];
                     a = stack[sp--];
                     stack[++sp] = a * b;
                     break;
-                case IDIV:
+                case DIV:
                     b = stack[sp--];
                     a = stack[sp--];
                     stack[++sp] = a / b;
                     break;
-                case IMOD:
+                case MOD:
                     b = stack[sp--];
                     a = stack[sp--];
                     stack[++sp] = a % b;
                     break;
-                case ILT:
+                case LT:
                     b = stack[sp--];
                     a = stack[sp--];
                     stack[++sp] = a < b ? TRUE : FALSE;
                     break;
-                case IEQ:
+                case EQ:
                     b = stack[sp--];
                     a = stack[sp--];
                     stack[++sp] = a == b;
                     break;
-                case IGT:
+                case GT:
                     b = stack[sp--];
                     a = stack[sp--];
                     stack[++sp] = a > b ? TRUE : FALSE;
                     break;
-                case ILEQ:
+                case LEQ:
                     b = stack[sp--];
                     a = stack[sp--];
                     stack[++sp] = a <= b ? TRUE : FALSE;
                     break;
-                case IGEQ:
+                case GEQ:
                     b = stack[sp--];
                     a = stack[sp--];
                     stack[++sp] = a >= b ? TRUE : FALSE;
                     break;
-                case ICONST:
+                case CONST:
                     stack[++sp] = code[ip++];
                     break;
                 case GLOAD:
@@ -181,7 +191,7 @@ program vm_compile(char *filename){
     unsigned long codep = 0;
     register int i;
     instruction* ins = setup_instructions();
-    unsigned int len = IDEC;
+    unsigned int len = DEC;
     size_t linelength = 0;
     int entry = 0;
     program prog;

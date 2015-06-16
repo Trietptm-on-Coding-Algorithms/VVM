@@ -3,21 +3,21 @@
 
 enum {
 /*Addition operation*/
-    IADD = 1,
+    ADD = 1,
 /*Subtraction operation*/
-    ISUB,
+    SUB,
 /*Multiplication operation*/
-    IMULT,
+    MULT,
 /*Division operation*/
-    IDIV,
+    DIV,
 /*Modulo operation*/
-    IMOD,
+    MOD,
 /*< operation*/
-    ILT,
+    LT,
 /*== operation*/
-    IEQ,
+    EQ,
 /*> operation*/
-    IGT,
+    GT,
 /*branch operation*/
     BR,
 /*branch if true operation*/
@@ -25,7 +25,7 @@ enum {
 /*branch if false operation*/
     BRF,
 /*put operation*/
-    ICONST,
+    CONST,
 /*load variable operation*/
     LOAD,
 /*load global variable operation*/
@@ -41,9 +41,9 @@ enum {
 /*end/halt operation*/
     HALT,
 /*<= operation*/
-    ILEQ,
+    LEQ,
 /*>= operation*/
-    IGEQ,
+    GEQ,
 /*call subroutine operation*/
     CALL,
 /*return from subroutine operation*/
@@ -53,9 +53,9 @@ enum {
 /*fetch operation*/
     FETCH,
 /*++ operation*/
-    IINC,
+    INC,
 /*-- operation*/
-    IDEC
+    DEC
 };
 
 /**
