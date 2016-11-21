@@ -7,23 +7,23 @@ Performance
 -----------
 
 Performance is pretty okay on basic, small programs. The included factorial
-function takes 0.1 second on 100000 iterations. As a scale, a Python 3.3 program
-on the same machine using the code:
+function takes 0.1 second on 100000 iterations (for 12). As a scale, a Python
+3.5 program on the same machine using the code:
 
-``
+```python
 def fac(n):
     if n < 2: return 1
-    else: return n * fac(n-1)
+    return n * fac(n-1)
 fac(12)
-``
+```
 
-takes about 3.7 seconds on 100000 iterations.
+takes about 1.9 seconds on 100000 iterations.
 
 This does not say anything about overall performance though and I am not
 sure whether this small, funny test has any real value in measuring performance.
-Also, Python is much more feature-rich, so you cannot compare the two at all.
+I wouldn't want to compare this to Python.
 
-DISCLAIMER: Parsing takes quite a long time, so try to write your programs as 
+*DISCLAIMER*: Parsing takes quite a long time, so try to write your programs as 
 concise as possible.
 
 Instruction set
