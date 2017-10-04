@@ -20,8 +20,9 @@
  * prints current operations and a stack trace.
  * Is invoked if DEBUG is defined.
  */
-static inline void disassemble(int sp, int fp, int ip, int opcode, instruction* ins, int code[], int stack[]){
+static inline void disassemble(int sp, int fp, int ip, instruction* ins, int code[], int stack[]){
     int i;
+    int opcode = code[ip];
     if(opcode > 0 && opcode < 24)
         printf("%04d: %s(%d)\n", ip, ins[opcode].name, opcode);
     if(ins[opcode].operands == 1)
@@ -35,140 +36,144 @@ static inline void disassemble(int sp, int fp, int ip, int opcode, instruction* 
 }
 
 void vm_execute(int code[], int ip, int datasize, unsigned long length){
-        int* data = (int *) alloca((size_t)datasize * sizeof(int));
-        int stack[MAX_SIZE];
-        register int sp = -1;
-        register int fp = -1;
-        int nargs, addr, a, b;
+  int* data = (int *) alloca((size_t)datasize * sizeof(int));
+  int stack[MAX_SIZE];
+  register int sp = -1;
+  register int fp = -1;
+  int nargs, addr, a, b;
 
-        instruction* ins = setup_instructions();
+  instruction* ins = setup_instructions();
 
-        while(ip < length){
-            int opcode = code[ip];
-            ip++;
-            if(DEBUG_ON){
-                if(ip+2 != length)
-                    disassemble(sp, fp, ip, opcode, ins, code, stack);
-            }
-            switch(opcode){
-                case INC:
-                    stack[sp]++;
-                    break;
-                case DEC:
-                    stack[sp]--;
-                    break;
-                case LOAD:
-                    stack[++sp] = stack[code[ip++]+fp];
-                    break;
-                case STORE:
-                    stack[fp+code[ip++]] = stack[sp--];
-                case BR:
-                    ip = code[ip];
-                    break;
-                case BRT:
-                    addr = code[ip++];
-                    if(stack[sp--] == TRUE) ip = addr;
-                    break;
-                case BRF:
-                    addr = code[ip++];
-                    if(stack[sp--] == FALSE) ip = addr;
-                    break;
-                case ADD:
-                    b = stack[sp--];
-                    a = stack[sp--];
-                    stack[++sp] = a + b;
-                    break;
-                case SUB:
-                    b = stack[sp--];
-                    a = stack[sp--];
-                    stack[++sp] = a - b;
-                    break;
-                case MULT:
-                    b = stack[sp--];
-                    a = stack[sp--];
-                    stack[++sp] = a * b;
-                    break;
-                case DIV:
-                    b = stack[sp--];
-                    a = stack[sp--];
-                    stack[++sp] = a / b;
-                    break;
-                case MOD:
-                    b = stack[sp--];
-                    a = stack[sp--];
-                    stack[++sp] = a % b;
-                    break;
-                case LT:
-                    b = stack[sp--];
-                    a = stack[sp--];
-                    stack[++sp] = a < b ? TRUE : FALSE;
-                    break;
-                case EQ:
-                    b = stack[sp--];
-                    a = stack[sp--];
-                    stack[++sp] = a == b;
-                    break;
-                case GT:
-                    b = stack[sp--];
-                    a = stack[sp--];
-                    stack[++sp] = a > b ? TRUE : FALSE;
-                    break;
-                case LEQ:
-                    b = stack[sp--];
-                    a = stack[sp--];
-                    stack[++sp] = a <= b ? TRUE : FALSE;
-                    break;
-                case GEQ:
-                    b = stack[sp--];
-                    a = stack[sp--];
-                    stack[++sp] = a >= b ? TRUE : FALSE;
-                    break;
-                case CONST:
-                    stack[++sp] = code[ip++];
-                    break;
-                case GLOAD:
-                    stack[++sp] = data[code[ip++]];
-                    break;
-                case GSTORE:
-                    data[code[ip++]] = stack[sp--];
-                    break;
-                case IPRINT:
-                    printf("%d", stack[sp--]);
-                    break;
-                case PRINT:
-                    putchar(stack[sp--]);
-                    break;
-                case FETCH:
-                    stack[++sp] = getchar();
-                    break;
-                case HALT:
-                    return;
-                case CALL:
-                    addr = code[ip++];
-                    nargs = code[ip++];
-                    stack[++sp] = nargs;
-                    stack[++sp] = fp;
-                    stack[++sp] = ip;
-                    fp = sp;
-                    ip = addr;
-                    break;
-                case RET:
-                    addr = stack[sp--];
-                    sp = fp;
-                    ip = stack[sp--];
-                    fp = stack[sp--];
-                    nargs = stack[sp--];
-                    sp -= nargs;
-                    stack[++sp] = addr;
-                    break;
-                case POP:
-                    sp--;
-                default:
-                    fprintf(stderr, "Unrecognized: %d\n", opcode);
-                    die(127, "Exit on program failure.");
-            }
-        }
+  /*
+    this uses dispatch tables as described in
+    https://eli.thegreenplace.net/2012/07/12/computed-goto-for-efficient-dispatch-tables/
+  */
+  static void* dispatch_table[] = {
+    NULL, &&do_add, &&do_sub, &&do_mult, &&do_div, &&do_mod, &&do_lt, &&do_eq,
+    &&do_gt, &&do_br, &&do_brt, &&do_brf, &&do_const, &&do_load, &&do_gload,
+    &&do_store, &&do_gstore, &&do_print, &&do_pop, &&do_halt, &&do_leq,
+    &&do_geq, &&do_call, &&do_ret, &&do_iprint, &&do_fetch, &&do_inc, &&do_dec
+  };
+  #define DISPATCH() goto *dispatch_table[code[ip++]]
+
+  DISPATCH();
+  while(ip < length){
+    if(DEBUG_ON && ip+2 != length) disassemble(sp, fp, ip, ins, code, stack);
+    do_inc:
+        stack[sp]++;
+        DISPATCH();
+    do_dec:
+        stack[sp]--;
+        DISPATCH();
+    do_load:
+        stack[++sp] = stack[code[ip++]+fp];
+        DISPATCH();
+    do_store:
+        stack[fp+code[ip++]] = stack[sp--];
+    do_br:
+        ip = code[ip];
+        DISPATCH();
+    do_brt:
+        addr = code[ip++];
+        if(stack[sp--] == TRUE) ip = addr;
+        DISPATCH();
+    do_brf:
+        addr = code[ip++];
+        if(stack[sp--] == FALSE) ip = addr;
+        DISPATCH();
+    do_add:
+        b = stack[sp--];
+        a = stack[sp--];
+        stack[++sp] = a + b;
+        DISPATCH();
+    do_sub:
+        b = stack[sp--];
+        a = stack[sp--];
+        stack[++sp] = a - b;
+        DISPATCH();
+    do_mult:
+        b = stack[sp--];
+        a = stack[sp--];
+        stack[++sp] = a * b;
+        DISPATCH();
+    do_div:
+        b = stack[sp--];
+        a = stack[sp--];
+        stack[++sp] = a / b;
+        DISPATCH();
+    do_mod:
+        b = stack[sp--];
+        a = stack[sp--];
+        stack[++sp] = a % b;
+        DISPATCH();
+    do_lt:
+        b = stack[sp--];
+        a = stack[sp--];
+        stack[++sp] = a < b ? TRUE : FALSE;
+        DISPATCH();
+    do_eq:
+        b = stack[sp--];
+        a = stack[sp--];
+        stack[++sp] = a == b;
+        DISPATCH();
+    do_gt:
+        b = stack[sp--];
+        a = stack[sp--];
+        stack[++sp] = a > b ? TRUE : FALSE;
+        DISPATCH();
+    do_leq:
+        b = stack[sp--];
+        a = stack[sp--];
+        stack[++sp] = a <= b ? TRUE : FALSE;
+        DISPATCH();
+    do_geq:
+        b = stack[sp--];
+        a = stack[sp--];
+        stack[++sp] = a >= b ? TRUE : FALSE;
+        DISPATCH();
+    do_const:
+        stack[++sp] = code[ip++];
+        DISPATCH();
+    do_gload:
+        stack[++sp] = data[code[ip++]];
+        DISPATCH();
+    do_gstore:
+        data[code[ip++]] = stack[sp--];
+        DISPATCH();
+    do_iprint:
+        printf("%d", stack[sp--]);
+        DISPATCH();
+    do_print:
+        putchar(stack[sp--]);
+        DISPATCH();
+    do_fetch:
+        stack[++sp] = getchar();
+        DISPATCH();
+    do_halt:
         return;
+    do_call:
+        addr = code[ip++];
+        nargs = code[ip++];
+        stack[++sp] = nargs;
+        stack[++sp] = fp;
+        stack[++sp] = ip;
+        fp = sp;
+        ip = addr;
+        DISPATCH();
+    do_ret:
+        addr = stack[sp--];
+        sp = fp;
+        ip = stack[sp--];
+        fp = stack[sp--];
+        nargs = stack[sp--];
+        sp -= nargs;
+        stack[++sp] = addr;
+        DISPATCH();
+    do_pop:
+        sp--;
+        DISPATCH();
+  }
+  return;
 }
 
 program vm_compile(char *filename){
